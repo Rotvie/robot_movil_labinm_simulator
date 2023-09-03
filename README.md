@@ -10,7 +10,7 @@ cd ..
 catkin_make
 ```
 
-# Run the simulation:
+# Run the simulation
 Source the environment and launch Gazebo in one terminal tab.
 ```
 roslaunch gazebo_ros empty_world.launch
@@ -21,7 +21,7 @@ Spawn the robot in another terminal tab.
 roslaunch rmls_gazebo gazebo.launch
 ```
 
-# Note:
+# Note
 For teleoperating the robot run this:
 ```
 rosrun teleop_twist_keyboard teleop_twist_keyboard.py 
