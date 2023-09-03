@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+
+ 
+<robot
+  name="rmls_description" xmlns:xacro="http://ros.org/wiki/xacro">
+  
+  <!--<xacro:include filename="$(find rmls_description)/urdf/materials.xacro" />-->
+
+
+<!-- Base Size -->
+  <xacro:property name="base_x_size" value="1.1200000" />
+  <xacro:property name="base_y_size" value="0.8020000" />
+  <!--<xacro:property name="base_y_size" value="1.0000000" />-->
+  <xacro:property name="base_z_size" value="0.6650000" />
+
+  <!-- Wheel Mounting Positions -->
+  <!--<xacro:property name="wheelbase" value="0.5120" />-->
+  <xacro:property name="wheelbase" value="0.855" />
+  <xacro:property name="track" value="0.78" />
+  <xacro:property name="wheel_vertical_offset" value="0.01282" />
+
+  <!-- Wheel Properties -->
+  <xacro:property name="wheel_length" value="0.1143" />
+  <xacro:property name="wheel_radius" value="0.1651" />
+
+<gazebo>
+  <plugin name="skid_steer_drive_controller" filename="libgazebo_ros_skid_steer_drive.so">
+    <updateRate>100.0</updateRate>
+    <robotNamespace>/</robotNamespace>
+    <leftFrontJoint>joint_rueda_fi</leftFrontJoint>
+    <rightFrontJoint>joint_rueda_fd</rightFrontJoint>
+    <leftRearJoint>joint_rueda_ri</leftRearJoint>
+    <rightRearJoint>joint_rueda_rd</rightRearJoint>
+    <wheelSeparation>0.85</wheelSeparation>
+    <wheelDiameter>0.33</wheelDiameter>
+    <robotBaseFrame>base_link</robotBaseFrame>
+    <torque>100</torque>
+    <topicName>cmd_vel</topicName>
+    <commandTopic>cmd_vel</commandTopic>
+    <broadcastTF>false</broadcastTF>
+    <odometryTopic>odom</odometryTopic>
+    <odometryFrame>odom</odometryFrame>
+    <!--<publishOdom>true</publishOdom>-->
+    <!--<robotBaseFrame>base_footprint</robotBaseFrame>    -->
+  </plugin>
+  
+  <plugin name="p3d_base_controller" filename="libgazebo_ros_p3d.so">
+      <alwaysOn>true</alwaysOn>
+      <updateRate>50.0</updateRate>
+      <bodyName>base_link</bodyName>
+      <topicName>ground_truth</topicName>
+      <gaussianNoise>0.00</gaussianNoise>
+      <frameName>world</frameName>
+      <xyzOffsets>0 0 0</xyzOffsets>
+      <rpyOffsets>0 0 0</rpyOffsets>
+    </plugin>
+</gazebo>
+
+
+<xacro:include filename="$(find ouster_os1_64)/urdf/os1_64.urdf.xacro"/>
+
+<xacro:property name="M_PI" value="3.14159"/>
+
+  
+
+
+  <!--<link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="-7.9945E-08 -0.0039311 0.19228"
+        rpy="0 0 0" />
+      <mass
+        value="65.556" />
+      <inertia
+        ixx="0.72237"
+        ixy="-2.778E-05"
+        ixz="-3.2189E-08"
+        iyy="0.53997"
+        iyz="4.0836E-06"
+        izz="1.0641" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://rmls_description/meshes/base_link.stl" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.75294 0.75294 0.75294 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://rmls_description/meshes/base_link.stl" />
+      </geometry>
+    </collision>
+  </link>-->
+  
+  <link name="base_link">
+     <!--<inertial>      
+      <mass value="65.556" />      
+      <origin
+        xyz="-7.9945E-08 -0.0039311 0.19228"
+        rpy="0 0 0" />      
+      <inertia
+        ixx="0.72237"
+        ixy="-2.778E-05"
+        ixz="-3.2189E-08"
+        iyy="0.53997"
+        iyz="4.0836E-06"
+        izz="1.0641" />
+    </inertial>-->
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://rmls_description/meshes/base_link.stl" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 ${base_z_size/4}" rpy="0 0 0" />
+      <geometry>
+        <box size="${base_x_size} ${base_y_size} ${base_z_size/2}"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin xyz="0 0 ${base_z_size*3/4}" rpy="0 0 0" />
+      <geometry>
+        <box size="${base_x_size*4/5} ${base_y_size} ${base_z_size/2}"/>
+      </geometry>
+    </collision>
+  </link>
+  
+  <link name="inertial_link">
+    <inertial>      
+      <mass value="65.556" />      
+      <origin
+        xyz="-7.9945E-08 -0.0039311 0.19228"
+        rpy="0 0 0" />      
+      <inertia
+        ixx="0.72237"
+        ixy="-2.778E-05"
+        ixz="-3.2189E-08"
+        iyy="0.53997"
+        iyz="4.0836E-06"
+        izz="1.0641" />
+    </inertial>
+  </link>
+
+  <joint name="inertial_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="inertial_link" />
+  </joint>
+  
+  <link
+    name="link_rueda_fd">    
+    <inertial>
+      <origin
+        xyz="-0.098502 -1.8319E-15 -2.7978E-07"
+        rpy="0 0 0" />
+      <mass
+        value="7.0608" />
+      <inertia
+        ixx="0.090588"
+        ixy="8.547E-16"
+        ixz="1.5903E-07"
+        iyy="0.049833"
+        iyz="-5.2042E-18"
+        izz="0.049833" />
+    </inertial>
+    <!--<origin xyz="${wheelbase/2} ${-track/2} ${wheel_vertical_offset}" rpy="0 0 0" />-->
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />      
+      <geometry>
+        <mesh
+          filename="package://rmls_description/meshes/link_rueda_fd.stl" />
+      </geometry>
+      <material name="">
+        <color
+          rgba="0.29804 0.29804 0.29804 0" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://rmls_description/meshes/link_rueda_fd.stl" />
+      </geometry>
+    </collision>
+    <!--<pose>${wheelbase/2} ${-track/2} ${-wheel_vertical_offset} 0 0 0</pose>-->
+    
+  </link>  
+  
+  <joint
+    name="joint_rueda_fd"
+    type="continuous">
+    <!--<origin
+      xyz="-0.36335 -0.425 0"
+      rpy="0 0 0" />-->
+    <origin xyz="${wheelbase/2} ${-track/2} ${wheel_vertical_offset}" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="link_rueda_fd" />
+    <axis xyz="0 1 0" />        
+  </joint>
+  
+  <link
+    name="link_rueda_fi">
+    <!--<inertial>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <mass
+        value="2.637" />
+      <inertia
+        ixx="0.02467"
+        ixy="0"
+        ixz="0"
+        iyy="0.04411"
+        iyz="0"
+        izz="0.02467" />
+    </inertial>-->
+    <inertial>
+      <origin
+        xyz="0.098502 8.8818E-16 -2.7978E-07"
+        rpy="0 0 0" />
+      <mass
+        value="7.0608" />
+      <inertia
+        ixx="0.090588"
+        ixy="4.3054E-16"
+        ixz="-1.5903E-07"
+        iyy="0.049833"
+        iyz="8.6736E-18"
+        izz="0.049833" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://rmls_description/meshes/link_rueda_fi.stl" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.29804 0.29804 0.29804 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://rmls_description/meshes/link_rueda_fi.stl" />
+      </geometry>
+    </collision>    
+  </link>
+  <joint
+    name="joint_rueda_fi"
+    type="continuous">
+    <!--<origin
+      xyz="0.36335 -0.425 0.01156"
+      rpy="-0.37539 0 0" />-->
+    <origin xyz="${wheelbase/2} ${track/2} ${wheel_vertical_offset}" rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="link_rueda_fi" />
+    <axis
+      xyz="0 1 0" />
+  </joint>
+  <link
+    name="link_rueda_rd">
+    <!--<inertial>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <mass
+        value="2.637" />
+      <inertia
+        ixx="0.02467"
+        ixy="0"
+        ixz="0"
+        iyy="0.04411"
+        iyz="0"
+        izz="0.02467" />
+    </inertial>-->
+    <inertial>
+      <origin
+        xyz="-0.098502 9.4369E-16 -2.7978E-07"
+        rpy="0 0 0" />
+      <mass
+        value="7.0608" />
+      <inertia
+        ixx="0.090588"
+        ixy="4.2772E-16"
+        ixz="1.5903E-07"
+        iyy="0.049833"
+        iyz="1.465E-18"
+        izz="0.049833" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://rmls_description/meshes/link_rueda_rd.stl" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.29804 0.29804 0.29804 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://rmls_description/meshes/link_rueda_rd.stl" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint_rueda_rd"
+    type="continuous">
+    <!--<origin
+      xyz="-0.36335 0.425 0.01156"
+      rpy="0 0 0" />-->
+    <origin xyz="${-wheelbase/2} ${-track/2} ${wheel_vertical_offset}" rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="link_rueda_rd" />
+    <axis
+      xyz="0 1 0" />
+  </joint>
+  <link
+    name="link_rueda_ri">
+    <!--<inertial>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <mass
+        value="2.637" />
+      <inertia
+        ixx="0.02467"
+        ixy="0"
+        ixz="0"
+        iyy="0.04411"
+        iyz="0"
+        izz="0.02467" />
+    </inertial>-->
+    <inertial>
+      <origin
+        xyz="0.098502 1.8874E-15 -2.7978E-07"
+        rpy="0 0 0" />
+      <mass
+        value="7.0608" />
+      <inertia
+        ixx="0.090588"
+        ixy="8.5441E-16"
+        ixz="-1.5903E-07"
+        iyy="0.049833"
+        iyz="-1.7347E-18"
+        izz="0.049833" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://rmls_description/meshes/link_rueda_ri.stl" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.29804 0.29804 0.29804 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://rmls_description/meshes/link_rueda_ri.stl" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint_rueda_ri"
+    type="continuous">
+    <!--<origin
+      xyz="0.36335 0.425 0.01156"
+      rpy="0.13799 0 0" />-->
+    <origin xyz="${-wheelbase/2} ${track/2} ${wheel_vertical_offset}" rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="link_rueda_ri" />
+    <axis
+      xyz="0 1 0" />
+  </joint>
+  
+  <gazebo reference="link_rueda_fd">
+    <material>Gazebo/FlatBlack</material>
+  </gazebo>
+  
+  <gazebo reference="link_rueda_fi">
+    <material>Gazebo/FlatBlack</material>
+  </gazebo>
+  
+  <gazebo reference="link_rueda_rd">
+    <material>Gazebo/FlatBlack</material>
+  </gazebo>
+  
+  <gazebo reference="link_rueda_ri">
+    <material>Gazebo/FlatBlack</material>
+  </gazebo>
+
+<xacro:os1_64 parent="base" name="os" prefix="/os_cloud_node" hz="10" samples="1024" gpu="false">
+    <origin xyz="0.21 0 0.62" rpy="0 0 0" />
+</xacro:os1_64>
+
+</robot>

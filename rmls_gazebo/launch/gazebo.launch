@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<launch>
+  
+  <param name="/use_sim_time" value="true"/>
+  <node name="tf_footprint_base" pkg="tf" type="static_transform_publisher" args="0 0 0 0 0 0 base_link base_footprint 100"/>
+
+  <param name="robot_description" command="$(find xacro)/xacro '$(find rmls_description)/urdf/rmls_description.urdf.xacro'"/> 
+
+  <node name="spawn_robot_labinm_model" pkg="gazebo_ros" type="spawn_model"
+    args="-x 0
+    -y 0
+    -Y 0.0
+    -unpause
+    -urdf
+    -param robot_description 
+    -model rmls_description" /> 
+
+  <node
+    name="fake_joint_calibration"
+    pkg="rostopic"
+    type="rostopic"
+    args="pub /calibrated std_msgs/Bool true" />
+
+  <node
+    name="robot_state_publisher"
+    pkg="robot_state_publisher"
+    type="robot_state_publisher" />
+
+</launch>
