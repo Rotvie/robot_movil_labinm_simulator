@@ -2,7 +2,8 @@
 <launch>
   
   <param name="/use_sim_time" value="true"/>
-  <node name="tf_footprint_base" pkg="tf" type="static_transform_publisher" args="0 0 0 0 0 0 base_link base_footprint 100"/>
+  <node name="tf_footprint_base" pkg="tf" type="static_transform_publisher" args="0 0 0.2 0 0 0 base_footprint base_link 100"/>
+  <node name="odom_to_base_footprint_tf" pkg="rmls_description" type="odom_to_base_footprint_tf" output="screen"/>
 
   <param name="robot_description" command="$(find xacro)/xacro '$(find rmls_description)/urdf/rmls_description.urdf.xacro'"/> 
 
